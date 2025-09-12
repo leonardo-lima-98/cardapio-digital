@@ -1,0 +1,53 @@
+{
+  "id_restaurante": "f62ccf0d-056e-424f-b646-7003aabfe72d",
+  "titulo": "Cardapio",
+  "nome_restaurante": "Pizzaria",
+  "categorias": {
+    "Pizza": {
+      "nome": "Pizza",
+      "produtos": {
+        "Pizza Pequeno": {
+          "nome": "Pizza Pequeno",
+          "descricao": "Pizza pequeno para 2 pessoas",
+          "preco": 40.0,
+          "imagem": "pizza_pequeno.jpg"
+        },
+        "Pizza Medio": {
+          "nome": "Pizza Medio",
+          "descricao": "Pizza medio para 2 pessoas",
+          "preco": 50.0,
+          "imagem": "pizza_medio.jpg"
+        },
+        "Pizza Grande": {
+          "nome": "Pizza Grande",
+          "descricao": "Pizza grande para 2 pessoas",
+          "preco": 60.0,
+          "imagem": "pizza_grande.jpg"
+        }
+      }
+    },
+    "Bebidas": {
+      "nome": "Bebidas",
+      "produtos": {
+        "Agua": {
+          "nome": "Agua",
+          "descricao": "Agua 500ml",
+          "preco": 5.0,
+          "imagem": "agua_500ml.jpg"
+        },
+        "Refrigerante": {
+          "nome": "Refrigerante",
+          "descricao": "Refrigerante 600ml",
+          "preco": 10.0,
+          "imagem": "refrigerante_600ml.jpg"
+        },
+        "Cerveja": {
+          "nome": "Cerveja",
+          "descricao": "Cerveja 473ml",
+          "preco": 15.0,
+          "imagem": "cerveja_473ml.jpg"
+        }
+      }
+    }
+  }
+}
