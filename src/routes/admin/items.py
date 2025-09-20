@@ -13,7 +13,7 @@ from src.schemas.item import ItemCreate, ItemUpdate, Item as ItemSchema
 
 router = APIRouter()
 
-def verify_category_ownership(category_id: int, current_user: User, db: Session):
+def verify_category_ownership(category_id: str, current_user: User, db: Session):
     category = db.query(Category).join(Restaurant).filter(
         Category.id == category_id,
         Restaurant.owner_id == current_user.id
@@ -29,7 +29,7 @@ def verify_category_ownership(category_id: int, current_user: User, db: Session)
 
 @router.post("/categories/{category_id}/items", response_model=ItemSchema)
 def create_item(
-    category_id: int,
+    category_id: str,
     item: ItemCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -49,7 +49,7 @@ def create_item(
 
 @router.get("/categories/{category_id}/items", response_model=List[ItemSchema])
 def list_items(
-    category_id: int,
+    category_id: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -63,7 +63,7 @@ def list_items(
 
 @router.get("/items/{item_id}", response_model=ItemSchema)
 def get_item(
-    item_id: int,
+    item_id: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -82,7 +82,7 @@ def get_item(
 
 @router.put("/items/{item_id}", response_model=ItemSchema)
 def update_item(
-    item_id: int,
+    item_id: str,
     item_update: ItemUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -109,7 +109,7 @@ def update_item(
 
 @router.delete("/items/{item_id}")
 def delete_item(
-    item_id: int,
+    item_id: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

@@ -1,6 +1,5 @@
 ## 6. Middleware de Autenticação (src/middleware/auth.py)
 
-
 from fastapi import HTTPException, Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session

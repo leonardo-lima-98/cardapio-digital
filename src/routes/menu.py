@@ -1,20 +1,20 @@
 ## 11. Route Pública do Menu (src/routes/menu.py)
 
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from src.core.config import settings
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from sqlalchemy.orm import Session, selectinload
 from src.core.database import get_db
 from src.models.restaurant import Restaurant
 from src.models.category import Category
 from src.schemas.restaurant import MenuPublic
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, JSONResponse
 
 router = APIRouter()
+templates = Jinja2Templates(directory="templates")
 
-@router.get("/", response_model=MenuPublic)
-def get_menu(
-    id: str = Query(..., description="Restaurant UUID"),
-    db: Session = Depends(get_db)
-):
-    # Query restaurant with all related data
+def _get_menu_data(id: str, db: Session):
+    """Função auxiliar para obter dados do menu"""
     restaurant = db.query(Restaurant)\
         .options(
             selectinload(Restaurant.categories)
@@ -36,12 +36,26 @@ def get_menu(
             [item for item in category.items if item.is_available],
             key=lambda x: x.order_position
         )
+        
+        # Converter itens para dict para o template
+        items_data = []
+        for item in ordered_items:
+            items_data.append({
+                "id": item.id,
+                "name": item.name,
+                "description": item.description,
+                "price": float(item.price),  # Converter Decimal para float
+                "image_url": item.image_url,
+                "is_available": item.is_available,
+                "order_position": item.order_position
+            })
+        
         category_data = {
             "id": category.id,
             "name": category.name,
             "description": category.description,
             "order_position": category.order_position,
-            "items": ordered_items
+            "items": items_data
         }
         ordered_categories.append(category_data)
     
@@ -52,7 +66,33 @@ def get_menu(
             "address": restaurant.address,
             "phone": restaurant.phone,
             "description": restaurant.description,
-            "created_at": restaurant.created_at
+            "created_at": str(restaurant.created_at)
         },
         "categories": ordered_categories
     }
+
+
+@router.get("/", response_class=HTMLResponse)
+def get_menu_html(
+    request: Request,
+    id: str = Query(..., description="Restaurant UUID"),
+    db: Session = Depends(get_db)
+):
+    """Retorna o menu em formato HTML"""
+    if settings.DEBUG:
+        return JSONResponse(content=_get_menu_data(id, db))
+    else:
+        try:
+            data = _get_menu_data(id, db)
+
+            return templates.TemplateResponse("menu.html", {
+                "request": request,
+                "restaurant_id": id,
+                "data": data
+            })
+            
+        except HTTPException:
+            return templates.TemplateResponse("menu_not_found.html", {
+                "request": request,
+                "restaurant_id": id
+            })

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.restaurant.name }} - Cardápio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .restaurant-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .restaurant-name {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .restaurant-info {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .category {
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .category-header {
+            background: #e8f4f8;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .category-name {
+            font-size: 1.3em;
+            color: #333;
+            margin: 0;
+        }
+        
+        .category-description {
+            color: #666;
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+        
+        .items {
+            padding: 0;
+        }
+        
+        .item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .item-price {
+            color: #2c5aa0;
+            font-weight: bold;
+            font-size: 1.1em;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+        
+        .item-description {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .no-items {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .restaurant-name {
+                font-size: 1.5em;
+            }
+            
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .item-price {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Restaurant Header -->
+    <div class="restaurant-header">
+        <h1 class="restaurant-name">{{ data.restaurant.name }}</h1>
+        <div class="restaurant-info">
+            <p>{{ data.restaurant.address }}</p>
+            <p>{{ data.restaurant.phone }}</p>
+            <p>{{ data.restaurant.description }}</p>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    {% for category in data.categories|sort(attribute='order_position') %}
+    <div class="category">
+        <div class="category-header">
+            <h2 class="category-name">{{ category.name }}</h2>
+            <p class="category-description">{{ category.description }}</p>
+        </div>
+        
+        <div class="items">
+            {% if category.items %}
+                {% for item in category["items"] %}
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-name">{{ item.name }}</span>
+                        <span class="item-price">R$ {{ "%.2f"|format(item.price|float) }}</span>
+                    </div>
+                    <p class="item-description">{{ item.description }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-items">
+                    Nenhum item disponível nesta categoria
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>

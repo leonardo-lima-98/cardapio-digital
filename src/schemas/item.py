@@ -24,8 +24,8 @@ class ItemUpdate(BaseModel):
     order_position: Optional[int] = None
 
 class Item(ItemBase):
-    id: int
-    category_id: int
+    id: str
+    category_id: str
     created_at: datetime
     updated_at: Optional[datetime] = None
     
@@ -34,7 +34,7 @@ class Item(ItemBase):
 
 # Menu schemas for public API
 class MenuItemPublic(BaseModel):
-    id: int
+    id: str
     name: str
     description: Optional[str] = None
     price: Decimal

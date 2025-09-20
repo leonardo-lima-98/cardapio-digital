@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio não encontrado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 40px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        
+        .error-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .error-icon {
+            font-size: 4em;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+        
+        .error-title {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .restaurant-id {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">🍽️</div>
+        <h1 class="error-title">Cardápio não encontrado</h1>
+        <div class="error-message">
+            <p>Não foi possível encontrar o cardápio solicitado.</p>
+            <p>Verifique se o ID do restaurante está correto:</p>
+            <div class="restaurant-id">{{ restaurant_id }}</div>
+            <p>Entre em contato com o restaurante se o problema persistir.</p>
+        </div>
+    </div>
+</body>
+</html>

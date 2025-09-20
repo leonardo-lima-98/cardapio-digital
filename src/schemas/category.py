@@ -18,7 +18,7 @@ class CategoryUpdate(BaseModel):
     order_position: Optional[int] = None
 
 class Category(CategoryBase):
-    id: int
+    id: str
     restaurant_id: str
     created_at: datetime
     updated_at: Optional[datetime] = None
@@ -31,7 +31,7 @@ class CategoryWithItems(Category):
 
 # Menu schemas for public API
 class MenuCategoryPublic(BaseModel):
-    id: int
+    id: str
     name: str
     description: Optional[str] = None
     order_position: int
