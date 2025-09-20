@@ -1,20 +1,28 @@
-# Imagem base
+### Dockerfile
+
 FROM python:3.11-slim
 
-# Define diretório de trabalho
 WORKDIR /app
 
-# Copia dependências
-COPY requirements.txt .
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instala dependências
+# Install Python dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia o código para dentro do container
+# Copy application code
 COPY . .
 
-# Expõe porta do FastAPI
+# Create non-root user
+RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
+USER app
+
+# Expose port
 EXPOSE 8000
 
-# Comando para iniciar o servidor
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

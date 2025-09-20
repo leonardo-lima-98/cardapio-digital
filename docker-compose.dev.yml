@@ -1,0 +1,16 @@
+### docker-compose.dev.yml
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=true
+      - SECRET_KEY=dev-secret-key-not-for-production
+    volumes:
+      - ./app:/app/app
+      - ./digital_menu.db:/app/digital_menu.db
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
