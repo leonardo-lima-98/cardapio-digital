@@ -1,7 +1,7 @@
 ## 7. Routes Admin - Autenticação (src/routes/admin/auth.py)
 
 from datetime import timedelta
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from src.core.database import get_db
@@ -14,8 +14,14 @@ from src.schemas.token import Token
 router = APIRouter()
 
 @router.post("/register", response_model=UserSchema)
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
+def register_user(user: UserCreate, db: Session = Depends(get_db), x_api_key: str = Header(...)):
     # Check if user already exists
+    if x_api_key != settings.SECRET_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid API Key"
+        )
+
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
         raise HTTPException(
@@ -36,6 +42,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
     
     return db_user
+
 
 @router.post("/login", response_model=Token)
 def login_user(user_credentials: UserLogin, db: Session = Depends(get_db)):

@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session, selectinload
 from src.core.database import get_db
 from src.models.restaurant import Restaurant
 from src.models.category import Category
-from src.schemas.restaurant import MenuPublic
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 

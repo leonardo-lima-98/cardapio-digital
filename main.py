@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.core.config import settings
 from src.core.database import engine, Base
+from src.middleware.api_key import APIKeyMiddleware
 from src.routes.admin import auth, restaurants, categories, items
 from src.routes import menu
 
@@ -15,6 +16,9 @@ app = FastAPI(
     version=settings.VERSION,
     debug=settings.DEBUG
 )
+
+# Custom middleware
+app.add_middleware(APIKeyMiddleware)
 
 # CORS middleware
 app.add_middleware(
